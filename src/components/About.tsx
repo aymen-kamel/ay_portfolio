@@ -23,7 +23,7 @@ const About = () => {
             
             <div className="space-y-8">
               <p className="text-xl leading-relaxed text-muted-foreground">
-                I am a 21-year-old 2nd year Licence in Computer Science at the Faculty of Science Sfax (Tunisia). 
+                I am a 21-year-old 3rd year Licence in Computer Science at the Faculty of Science Sfax (Tunisia). 
                 I enjoy building data-driven products, experimenting with AI/ML, and shipping clean, maintainable web apps.
               </p>
               
