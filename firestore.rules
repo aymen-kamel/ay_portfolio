@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow anyone to write to the messages collection (for contact form)
+    match /messages/{document} {
+      allow write: if true;
+      allow read: if false; // Prevent reading messages for privacy
+    }
+
+    // You can add more rules for other collections here
+    // For example, if you have other collections, define their rules
+  }
+}
