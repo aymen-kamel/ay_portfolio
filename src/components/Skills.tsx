@@ -1,154 +1,154 @@
-import React from "react";
-import { Code, Brain, Globe, Wrench, Users, Languages, CheckCircle } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { Brain, Globe, Cpu, Users, Languages, CheckCircle2 } from "lucide-react";
 
 const Skills = () => {
-  const skillCategories = [
-    {
-      name: "Langages de Programmation",
-      icon: Code,
-      items: [
-        { name: "Python", level: "Expert" },
-        { name: "TypeScript / JS", level: "Avancé" },
-        { name: "Java", level: "Avancé" },
-        { name: "SQL", level: "Intermédiaire" }
-      ]
-    },
-    {
-      name: "IA & Machine Learning",
-      icon: Brain,
-      items: [
-        { name: "Computer Vision (YOLOv11, TrackNet)", level: "Spécialité" },
-        { name: "LLMs & RAG Architectures", level: "Avancé" },
-        { name: "TensorFlow / Keras", level: "Avancé" },
-        { name: "Deep Learning & NLP", level: "Pratique" }
-      ]
-    },
-    {
-      name: "Développement Web & APIs",
-      icon: Globe,
-      items: [
-        { name: "FastAPI", level: "Expert" },
-        { name: "React", level: "Avancé" },
-        { name: "NestJS & Node.js", level: "Avancé" },
-        { name: "Angular & Spring", level: "Intermédiaire" }
-      ]
-    },
-    {
-      name: "Outils & Méthodologies",
-      icon: Wrench,
-      items: [
-        { name: "Git & GitHub", level: "Quotidien" },
-        { name: "Docker & DevOps", level: "Pratique" },
-        { name: "Agile / Scrum", level: "Maîtrisé" },
-        { name: "Architecture Logicielle", level: "Avancé" }
-      ]
-    }
-  ];
+  const { t } = useLanguage();
 
-  const languages = [
-    { name: "Arabe", level: "Langue maternelle", percentage: 100 },
-    { name: "Français", level: "Courant (B2)", percentage: 85 },
-    { name: "Anglais", level: "Bon niveau (IELTS 5.5)", percentage: 75 },
-    { name: "Néerlandais", level: "Débutant", percentage: 25 }
-  ];
+  const pillarIcons: Record<string, any> = {
+    "01": Brain,
+    "02": Globe,
+    "03": Cpu,
+    "04": Users,
+  };
 
-  const sourcingSkills = [
-    "IT Talent Sourcing & Candidate Screening",
-    "Recherche de profils IT & Talent Mapping",
-    "Qualification technique des candidats",
-    "LinkedIn Research & Business Development",
-    "Communication candidats & clients IT",
-    "Organisation & Autonomie"
+  const spokenLanguages = [
+    { name: "Arabe", level: "Langue maternelle / Native", tag: "Native" },
+    { name: "Français", level: "Courant / Professional (B2)", tag: "Fluent" },
+    { name: "Anglais", level: "Bon niveau académique (IELTS 5.5)", tag: "IELTS 5.5" },
+    { name: "Néerlandais", level: "Notions de base / Beginner", tag: "A1" },
   ];
 
   return (
-    <section id="skills" className="section-padding bg-gradient-to-br from-background via-muted/20 to-background relative">
-      <div className="container-custom">
-        <div className="max-w-6xl mx-auto space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-gradient">
-              Compétences & Langues
+    <section id="expertise" className="section-padding bg-[#111111] relative">
+      <div className="container-custom space-y-16">
+        {/* Section Header */}
+        <div className="editorial-reveal flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[rgba(242,238,230,0.08)] pb-8">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#96918E] tracking-widest uppercase">
+              <span className="text-[#8C374A] font-bold">03 / 05</span>
+              <span>TECHNICAL DOMAINS</span>
+            </div>
+            <h2 className="font-editorial text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#F2EEE6]">
+              {t.expertise.title}
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Panorama de mes stacks techniques en IA, développement full-stack, langues et sourcing informatique.
-            </p>
           </div>
+          <p className="text-sm md:text-base text-[#96918E] max-w-md font-sans leading-relaxed">
+            {t.expertise.description}
+          </p>
+        </div>
 
-          {/* Core Technical Skills Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {skillCategories.map((cat, idx) => {
-              const IconComp = cat.icon;
-              return (
-                <div key={idx} className="cv-card group hover:border-primary/50 transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 text-accent">
-                      <IconComp size={24} />
+        {/* Four Editorial Pillars Grid */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {t.expertise.pillars.map((pillar, idx) => {
+            const Icon = pillarIcons[pillar.id] || Cpu;
+            return (
+              <div
+                key={pillar.id}
+                className="editorial-card p-8 rounded-2xl relative overflow-hidden group hover:border-[#8C374A]/50 transition-all duration-300 flex flex-col justify-between min-h-[290px]"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-4 mb-6">
+                    <span className="font-mono text-xl sm:text-2xl font-bold text-[#8C374A]">
+                      {pillar.id}
+                    </span>
+                    <div className="w-10 h-10 rounded-xl bg-[#111111] border border-[rgba(242,238,230,0.08)] flex items-center justify-center text-[#F2EEE6] group-hover:text-[#8C374A] transition-colors">
+                      <Icon size={20} />
                     </div>
-                    <h3 className="text-xl font-bold text-gradient">{cat.name}</h3>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {cat.items.map((skill, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className="p-3 rounded-xl bg-background/50 border border-primary/10 hover:border-primary/30 transition-colors flex flex-col justify-between"
-                      >
-                        <span className="font-semibold text-foreground text-sm">{skill.name}</span>
-                        <span className="text-xs text-primary font-medium mt-1">{skill.level}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  <h3 className="font-editorial text-2xl font-bold text-[#F2EEE6] mb-3">
+                    {pillar.title}
+                  </h3>
 
-          {/* Sourcing & Languages Section */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* IT Talent Sourcing Skills */}
-            <div className="cv-card border-accent/30">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-accent/10 border border-accent/20 text-accent">
-                  <Users size={24} />
+                  <p className="text-sm text-[#96918E] font-sans leading-relaxed mb-6">
+                    {pillar.desc}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-gradient">Compétences Sourcing & Recrutement IT</h3>
+
+                {/* Tech Pills */}
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-[rgba(242,238,230,0.06)]">
+                  {pillar.technologies.map((tech, i) => (
+                    <span key={i} className="editorial-tag">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
+            );
+          })}
+        </div>
 
-              <div className="space-y-3">
-                {sourcingSkills.map((sk, i) => (
-                  <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/20 border border-primary/10">
-                    <CheckCircle size={18} className="text-accent shrink-0" />
-                    <span className="text-sm text-foreground/90 font-medium">{sk}</span>
-                  </div>
-                ))}
+        {/* Spoken Languages & IT Sourcing Section */}
+        <div className="grid md:grid-cols-12 gap-8 pt-4">
+          {/* Spoken Languages */}
+          <div className="md:col-span-6 editorial-card p-8 rounded-2xl space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-[#111111] border border-[rgba(242,238,230,0.08)] flex items-center justify-center text-[#8C374A]">
+                <Languages size={18} />
+              </div>
+              <div>
+                <h4 className="font-editorial text-xl font-bold text-[#F2EEE6]">
+                  Langues & Communication
+                </h4>
+                <p className="text-xs text-[#96918E] font-sans">
+                  Profil international et environnement multiculturel
+                </p>
               </div>
             </div>
 
-            {/* Languages Progress */}
-            <div className="cv-card">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 text-primary">
-                  <Languages size={24} />
-                </div>
-                <h3 className="text-xl font-bold text-gradient">Langues</h3>
-              </div>
-
-              <div className="space-y-5">
-                {languages.map((lang, lIdx) => (
-                  <div key={lIdx} className="space-y-1.5">
-                    <div className="flex justify-between items-center text-sm font-semibold">
-                      <span className="text-foreground">{lang.name}</span>
-                      <span className="text-primary text-xs font-medium">{lang.level}</span>
-                    </div>
-                    <div className="h-2 w-full bg-muted/50 rounded-full overflow-hidden p-0.5 border border-primary/10">
-                      <div
-                        className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-1000"
-                        style={{ width: `${lang.percentage}%` }}
-                      ></div>
-                    </div>
+            <div className="space-y-3 font-sans">
+              {spokenLanguages.map((lang, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-3 rounded-xl bg-[#111111]/40 border border-[rgba(242,238,230,0.06)]"
+                >
+                  <div>
+                    <span className="font-medium text-sm text-[#F2EEE6] block">
+                      {lang.name}
+                    </span>
+                    <span className="text-xs text-[#96918E]">
+                      {lang.level}
+                    </span>
                   </div>
-                ))}
+                  <span className="editorial-badge text-[11px] px-2.5 py-1 rounded bg-[#702C3B]/15 text-[#F2EEE6] border border-[#702C3B]/30">
+                    {lang.tag}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* IT Talent Sourcing & Methodologies */}
+          <div className="md:col-span-6 editorial-card p-8 rounded-2xl space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-[#111111] border border-[rgba(242,238,230,0.08)] flex items-center justify-center text-[#8C374A]">
+                <Users size={18} />
               </div>
+              <div>
+                <h4 className="font-editorial text-xl font-bold text-[#F2EEE6]">
+                  Sourcing & Recrutement Technique
+                </h4>
+                <p className="text-xs text-[#96918E] font-sans">
+                  Expertise développée lors des projets de matching IA & TSYP13
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2.5 font-sans">
+              {[
+                "Cartographie des compétences informatiques & Talent Mapping",
+                "Screening & qualification technique approfondie des candidats",
+                "Compréhension fine des architectures technologiques d'entreprise",
+                "Communication structurée entre équipes techniques et recruteurs",
+                "Pratique rigoureuse des méthodologies Agiles / Scrum",
+              ].map((skill, i) => (
+                <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg bg-[#111111]/40 border border-[rgba(242,238,230,0.06)]">
+                  <CheckCircle2 size={16} className="text-[#8C374A] shrink-0" />
+                  <span className="text-xs sm:text-sm text-[#F2EEE6]/90 font-medium">
+                    {skill}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

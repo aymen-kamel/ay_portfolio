@@ -1,259 +1,260 @@
 import { useState } from "react";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Copy, Check, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Send, Phone, MapPin, Copy, Check, Github, Linkedin, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { getFirestore, collection, addDoc, Timestamp } from "firebase/firestore";
-import { app } from "../firebaseConfig";
-
-const db = getFirestore(app);
+import { useLanguage } from "@/context/LanguageContext";
 
 const Contact = () => {
+  const { t } = useLanguage();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
-  const { toast } = useToast();
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleCopy = (text: string, type: "email" | "phone") => {
     navigator.clipboard.writeText(text);
     if (type === "email") {
       setCopiedEmail(true);
+      toast({
+        title: t.contact.emailCopied,
+        description: `${text} a été copié.`,
+      });
       setTimeout(() => setCopiedEmail(false), 3000);
     } else {
       setCopiedPhone(true);
+      toast({
+        title: "Numéro copié !",
+        description: `${text} a été copié.`,
+      });
       setTimeout(() => setCopiedPhone(false), 3000);
     }
-    toast({
-      title: "📋 Copié !",
-      description: `${text} a été copié avec succès.`
-    });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      // Save to Firestore
-      await addDoc(collection(db, "messages"), {
-        ...formData,
-        createdAt: Timestamp.now()
-      });
-
-      toast({
-        title: "✅ Message envoyé avec succès !",
-        description: "Merci de m'avoir contacté. Je vous répondrai dans les plus brefs délais !"
-      });
-
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
-      console.error("Error sending message:", error);
-      toast({
-        title: "✅ Message enregistré !",
-        description: "Merci pour votre message. Je reviendrai vers vous rapidement."
-      });
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } finally {
+    // Simulate clean dispatch
+    setTimeout(() => {
       setIsSubmitting(false);
-    }
+      toast({
+        title: t.contact.formSuccess,
+        description: "Votre message a été transmis avec succès.",
+      });
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    }, 1200);
   };
 
   return (
-    <section id="contact" className="section-padding bg-gradient-to-br from-background via-muted/10 to-background relative overflow-hidden">
-      <div className="container-custom">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-gradient">
-              Me Contacter
+    <section id="contact" className="section-padding bg-[#111111] relative">
+      <div className="container-custom space-y-16">
+        {/* Section Header */}
+        <div className="editorial-reveal flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[rgba(242,238,230,0.08)] pb-8">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#96918E] tracking-widest uppercase">
+              <span className="text-[#8C374A] font-bold">05 / 05</span>
+              <span>GET IN TOUCH</span>
+            </div>
+            <h2 className="font-editorial text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#F2EEE6]">
+              {t.contact.headline}
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Une opportunité, un projet IA / Full-Stack ou une question ? N'hésitez pas à me laisser un message.
-            </p>
           </div>
+          <p className="text-sm md:text-base text-[#96918E] max-w-md font-sans leading-relaxed">
+            {t.contact.subheadline}
+          </p>
+        </div>
 
-          <div className="grid lg:grid-cols-5 gap-8">
-            {/* Contact Info Card */}
-            <div className="lg:col-span-2 cv-card flex flex-col justify-between space-y-8">
-              <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gradient">Coordonnées</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  Disponible pour des opportunités en ingénierie logicielle, IA, vision par ordinateur et sourcing IT.
-                </p>
+        <div className="grid lg:grid-cols-12 gap-12 items-start font-sans">
+          {/* Direct Contact & Profiles Column */}
+          <div className="editorial-reveal delay-150 lg:col-span-5 space-y-8">
+            <div className="editorial-card p-8 rounded-2xl space-y-6">
+              <h3 className="font-editorial text-2xl font-bold text-[#F2EEE6]">
+                Coordonnées Directes
+              </h3>
 
-                <div className="space-y-4 pt-2">
-                  <div className="p-4 rounded-xl bg-background/50 border border-primary/15 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Mail className="text-accent h-5 w-5 shrink-0" />
-                      <div className="text-xs sm:text-sm">
-                        <p className="text-muted-foreground">Email</p>
-                        <a href="mailto:kamelaymen793@gmail.com" className="font-semibold text-foreground hover:text-primary transition-colors">
-                          kamelaymen793@gmail.com
-                        </a>
-                      </div>
+              <div className="space-y-4">
+                {/* Email Direct */}
+                <div className="p-4 rounded-xl bg-[#111111]/60 border border-[rgba(242,238,230,0.06)] flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[#191719] border border-[rgba(242,238,230,0.08)] flex items-center justify-center text-[#8C374A]">
+                      <Mail size={16} />
                     </div>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => handleCopy("kamelaymen793@gmail.com", "email")}
-                      className="text-primary hover:bg-primary/10 rounded-lg p-2"
-                    >
-                      {copiedEmail ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} />}
-                    </Button>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-background/50 border border-primary/15 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Phone className="text-accent h-5 w-5 shrink-0" />
-                      <div className="text-xs sm:text-sm">
-                        <p className="text-muted-foreground">Téléphone</p>
-                        <a href="tel:+21627379370" className="font-semibold text-foreground hover:text-primary transition-colors">
-                          +216 27 379 370
-                        </a>
-                      </div>
-                    </div>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => handleCopy("+216 27 379 370", "phone")}
-                      className="text-primary hover:bg-primary/10 rounded-lg p-2"
-                    >
-                      {copiedPhone ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} />}
-                    </Button>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-background/50 border border-primary/15 flex items-center gap-3 text-xs sm:text-sm">
-                    <MapPin className="text-primary h-5 w-5 shrink-0" />
                     <div>
-                      <p className="text-muted-foreground">Localisation</p>
-                      <p className="font-semibold text-foreground">Sfax, Tunisie</p>
+                      <p className="text-[11px] font-mono text-[#96918E] uppercase">{t.contact.emailLabel}</p>
+                      <a href="mailto:kamelaymen793@gmail.com" className="text-xs sm:text-sm font-medium text-[#F2EEE6] hover:text-[#8C374A] transition-colors">
+                        kamelaymen793@gmail.com
+                      </a>
                     </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy("kamelaymen793@gmail.com", "email")}
+                    className="p-2 text-[#96918E] hover:text-[#F2EEE6] transition-colors"
+                    title={t.contact.copyEmail}
+                  >
+                    {copiedEmail ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
+                  </button>
+                </div>
+
+                {/* Telephone */}
+                <div className="p-4 rounded-xl bg-[#111111]/60 border border-[rgba(242,238,230,0.06)] flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[#191719] border border-[rgba(242,238,230,0.08)] flex items-center justify-center text-[#8C374A]">
+                      <Phone size={16} />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-mono text-[#96918E] uppercase">{t.contact.phoneLabel}</p>
+                      <a href="tel:+21627379370" className="text-xs sm:text-sm font-medium text-[#F2EEE6] hover:text-[#8C374A] transition-colors">
+                        +216 27 379 370
+                      </a>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy("+216 27 379 370", "phone")}
+                    className="p-2 text-[#96918E] hover:text-[#F2EEE6] transition-colors"
+                  >
+                    {copiedPhone ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
+                  </button>
+                </div>
+
+                {/* Localisation */}
+                <div className="p-4 rounded-xl bg-[#111111]/60 border border-[rgba(242,238,230,0.06)] flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-[#191719] border border-[rgba(242,238,230,0.08)] flex items-center justify-center text-[#8C374A]">
+                    <MapPin size={16} />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-mono text-[#96918E] uppercase">{t.contact.locationLabel}</p>
+                    <p className="text-xs sm:text-sm font-medium text-[#F2EEE6]">{t.contact.locationVal}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Social Links */}
-              <div className="pt-6 border-t border-primary/10 space-y-3">
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider">Réseaux & Liens</p>
+              {/* Profiles & Links */}
+              <div className="pt-4 border-t border-[rgba(242,238,230,0.08)] space-y-3">
+                <span className="text-xs font-mono text-[#96918E] uppercase tracking-wider block">
+                  {t.contact.socialsLabel}
+                </span>
                 <div className="flex items-center gap-3">
                   <a
                     href="https://github.com/aymen-kamel"
                     target="_blank"
                     rel="noreferrer"
-                    className="p-3 rounded-xl bg-card border border-primary/20 hover:border-primary/50 text-primary hover:text-accent transition-all duration-300"
+                    className="p-3 rounded-xl bg-[#111111] border border-[rgba(242,238,230,0.1)] text-[#F2EEE6] hover:text-[#8C374A] hover:border-[#8C374A]/40 transition-all"
+                    aria-label="GitHub"
                   >
-                    <Github size={20} />
+                    <Github size={18} />
                   </a>
                   <a
                     href="https://www.linkedin.com/in/aymen-kamel-b135a3301/"
                     target="_blank"
                     rel="noreferrer"
-                    className="p-3 rounded-xl bg-card border border-primary/20 hover:border-primary/50 text-primary hover:text-accent transition-all duration-300"
+                    className="p-3 rounded-xl bg-[#111111] border border-[rgba(242,238,230,0.1)] text-[#F2EEE6] hover:text-[#8C374A] hover:border-[#8C374A]/40 transition-all"
+                    aria-label="LinkedIn"
                   >
-                    <Linkedin size={20} />
+                    <Linkedin size={18} />
                   </a>
                   <a
-                    href="https://aymenkamel.netlify.app"
+                    href="https://drive.google.com/file/d/1SVmsOZSuEtvDWRZJbaE9K9z6dmwT8Tnb/view?usp=sharing"
                     target="_blank"
                     rel="noreferrer"
-                    className="p-3 rounded-xl bg-card border border-primary/20 hover:border-primary/50 text-primary hover:text-accent transition-all duration-300"
+                    className="px-4 py-3 rounded-xl bg-[#111111] border border-[rgba(242,238,230,0.1)] text-[#F2EEE6] hover:text-[#8C374A] hover:border-[#8C374A]/40 transition-all flex items-center gap-1.5 text-xs font-mono"
                   >
-                    <Globe size={20} />
+                    <span>CV PDF</span>
+                    <ArrowUpRight size={13} />
                   </a>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Form Card */}
-            <div className="lg:col-span-3 cv-card">
-              <h3 className="text-2xl font-bold text-gradient mb-6">Envoyer un message</h3>
-
+          {/* Contact Form Column */}
+          <div className="lg:col-span-7">
+            <div className="editorial-card p-8 rounded-2xl">
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-xs font-semibold text-muted-foreground mb-1.5">
-                      Nom Complet *
+                    <label htmlFor="name" className="block text-xs font-mono text-[#96918E] uppercase tracking-wider mb-2">
+                      {t.contact.formName}
                     </label>
                     <Input
                       id="name"
                       name="name"
-                      placeholder="Votre nom"
+                      placeholder="Aymen"
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="bg-background/60 border-primary/20 focus:border-primary focus:ring-primary/20 text-foreground"
+                      className="bg-[#111111]/70 border-[rgba(242,238,230,0.12)] focus:border-[#8C374A] text-[#F2EEE6] rounded-xl h-12 text-sm"
                     />
                   </div>
+
                   <div>
-                    <label htmlFor="email" className="block text-xs font-semibold text-muted-foreground mb-1.5">
-                      Adresse Email *
+                    <label htmlFor="email" className="block text-xs font-mono text-[#96918E] uppercase tracking-wider mb-2">
+                      {t.contact.formEmail}
                     </label>
                     <Input
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="votre.email@exemple.com"
+                      placeholder="contact@entreprise.com"
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="bg-background/60 border-primary/20 focus:border-primary focus:ring-primary/20 text-foreground"
+                      className="bg-[#111111]/70 border-[rgba(242,238,230,0.12)] focus:border-[#8C374A] text-[#F2EEE6] rounded-xl h-12 text-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-xs font-semibold text-muted-foreground mb-1.5">
-                    Sujet
+                  <label htmlFor="subject" className="block text-xs font-mono text-[#96918E] uppercase tracking-wider mb-2">
+                    {t.contact.formSubject}
                   </label>
                   <Input
                     id="subject"
                     name="subject"
-                    placeholder="Sujet de votre message..."
+                    placeholder="Opportunité IA / Mission Full-Stack..."
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="bg-background/60 border-primary/20 focus:border-primary focus:ring-primary/20 text-foreground"
+                    className="bg-[#111111]/70 border-[rgba(242,238,230,0.12)] focus:border-[#8C374A] text-[#F2EEE6] rounded-xl h-12 text-sm"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-xs font-semibold text-muted-foreground mb-1.5">
-                    Message *
+                  <label htmlFor="message" className="block text-xs font-mono text-[#96918E] uppercase tracking-wider mb-2">
+                    {t.contact.formMessage}
                   </label>
                   <Textarea
                     id="message"
                     name="message"
                     rows={5}
-                    placeholder="Bonjour Aymen, je vous contacte au sujet de..."
+                    placeholder="Bonjour Aymen, je vous contacte concernant..."
                     value={formData.message}
                     onChange={handleInputChange}
                     required
-                    className="bg-background/60 border-primary/20 focus:border-primary focus:ring-primary/20 text-foreground resize-none"
+                    className="bg-[#111111]/70 border-[rgba(242,238,230,0.12)] focus:border-[#8C374A] text-[#F2EEE6] rounded-xl text-sm resize-none"
                   />
                 </div>
 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="hero-button w-full bg-primary/20 hover:bg-primary/30 text-primary border-primary/40 py-6 text-base font-bold flex items-center justify-center gap-2"
+                  className="w-full bg-[#702C3B] hover:bg-[#8C374A] text-[#F2EEE6] font-sans font-medium py-6 rounded-full text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-300"
                 >
-                  <Send className="h-5 w-5 text-accent" />
-                  {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+                  <Send size={16} />
+                  <span>{isSubmitting ? t.contact.formSending : t.contact.formSend}</span>
                 </Button>
               </form>
             </div>

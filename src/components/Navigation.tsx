@@ -1,27 +1,28 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, FileText, Sparkles } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 import ResumeModal from "./ResumeModal";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
-    { label: "Accueil", href: "#hero" },
-    { label: "À propos", href: "#about" },
-    { label: "Expérience", href: "#experience" },
-    { label: "Projets", href: "#projects" },
-    { label: "Certifications", href: "#certifications" },
-    { label: "Compétences", href: "#skills" },
-    { label: "Contact", href: "#contact" },
+    { label: t.nav.links.home, href: "#hero" },
+    { label: t.nav.links.work, href: "#projects" },
+    { label: t.nav.links.expertise, href: "#expertise" },
+    { label: t.nav.links.journey, href: "#experience" },
+    { label: t.nav.links.about, href: "#about" },
+    { label: t.nav.links.contact, href: "#contact" },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navLinks.map(link => link.href.slice(1));
-      const scrollPosition = window.scrollY + 120;
+      const sections = ["hero", "projects", "expertise", "experience", "about", "contact"];
+      const scrollPosition = window.scrollY + 160;
 
       for (const section of sections.reverse()) {
         const element = document.getElementById(section);
@@ -32,7 +33,7 @@ const Navigation = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -44,76 +45,130 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-primary/20 shadow-lg shadow-black/20">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#111111]/85 backdrop-blur-xl border-b border-[rgba(242,238,230,0.08)] transition-all duration-300">
         <div className="container-custom">
-          <div className="flex items-center justify-between py-4">
-            {/* Brand Logo */}
-            <a href="#hero" className="relative group flex items-center space-x-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 border border-primary/40 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <span className="text-xl font-bold text-gradient">AK</span>
-              </div>
-              <div className="hidden sm:block text-left">
-                <h2 className="text-lg font-bold text-foreground leading-none">Aymen Kamel</h2>
-                <span className="text-xs text-primary font-medium">AI & Full-Stack Engineer</span>
-              </div>
+          <div className="flex items-center justify-between h-20">
+            {/* Monogram Brand */}
+            <a
+              href="#hero"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#hero");
+              }}
+              className="group flex items-baseline gap-2 cursor-pointer"
+            >
+              <span className="font-editorial text-2xl md:text-3xl font-bold tracking-tight text-[#F2EEE6] group-hover:text-[#F2EEE6]/90 transition-colors">
+                AK<span className="text-[#702C3B]">.</span>
+              </span>
             </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1">
-              {navLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => handleLinkClick(link.href)}
-                  className={`nav-link text-sm ${activeSection === link.href.slice(1) ? 'active' : ''}`}
-                >
-                  {link.label}
-                </button>
-              ))}
-            </div>
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center space-x-8 text-sm">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.slice(1);
+                return (
+                  <button
+                    key={link.href}
+                    onClick={() => handleLinkClick(link.href)}
+                    className={`font-sans transition-colors duration-200 tracking-wide text-xs uppercase font-medium ${
+                      isActive
+                        ? "text-[#F2EEE6] font-semibold"
+                        : "text-[#96918E] hover:text-[#F2EEE6]"
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                );
+              })}
+            </nav>
 
-            {/* Actions: Resume Modal Button */}
-            <div className="flex items-center space-x-3">
+            {/* Right Actions: Language Switcher & Resume */}
+            <div className="flex items-center space-x-5">
+              {/* Language Switcher [FR / EN] */}
+              <div className="flex items-center space-x-1.5 text-xs font-mono tracking-widest border border-[rgba(242,238,230,0.1)] rounded-full px-2.5 py-1 bg-[#191719]/60">
+                <button
+                  type="button"
+                  onClick={() => setLanguage("fr")}
+                  className={`transition-colors px-1 py-0.5 rounded ${
+                    language === "fr"
+                      ? "text-[#F2EEE6] font-bold"
+                      : "text-[#96918E] hover:text-[#F2EEE6]"
+                  }`}
+                  aria-label="Passer en Français"
+                >
+                  FR
+                </button>
+                <span className="text-[rgba(242,238,230,0.2)]">|</span>
+                <button
+                  type="button"
+                  onClick={() => setLanguage("en")}
+                  className={`transition-colors px-1 py-0.5 rounded ${
+                    language === "en"
+                      ? "text-[#F2EEE6] font-bold"
+                      : "text-[#96918E] hover:text-[#F2EEE6]"
+                  }`}
+                  aria-label="Switch to English"
+                >
+                  EN
+                </button>
+              </div>
+
+              {/* Resume Trigger */}
               <Button
+                variant="outline"
+                size="sm"
                 onClick={() => setIsResumeOpen(true)}
-                className="hero-button bg-primary/20 text-primary border-primary/40 hover:bg-primary/30 px-4 py-2 text-xs sm:text-sm font-semibold flex items-center gap-2"
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-sans tracking-wide bg-transparent border-[rgba(242,238,230,0.18)] hover:border-[rgba(242,238,230,0.4)] text-[#F2EEE6] hover:bg-[rgba(242,238,230,0.04)] px-4 py-2 rounded-full transition-all"
               >
-                <FileText className="h-4 w-4 text-accent" />
-                <span>Voir le CV</span>
+                <span>{t.nav.viewResume}</span>
+                <ArrowUpRight size={13} className="text-[#96918E]" />
               </Button>
 
-              {/* Mobile Menu Toggle */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="lg:hidden bg-primary/10 border border-primary/20 hover:border-primary/40 rounded-xl p-2.5 text-primary"
+              {/* Mobile Menu Button */}
+              <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                aria-label="Toggle Menu"
+                className="md:hidden p-2 text-[#F2EEE6] hover:text-[#F2EEE6]/80 focus:outline-none"
+                aria-label="Menu"
               >
                 {isOpen ? <X size={22} /> : <Menu size={22} />}
-              </Button>
+              </button>
             </div>
           </div>
 
-          {/* Mobile Navigation Dropdown */}
+          {/* Mobile Dropdown Menu */}
           {isOpen && (
-            <div className="lg:hidden pb-6 pt-2 backdrop-blur-2xl border-t border-primary/10 animate-fadeIn">
-              <div className="flex flex-col space-y-2">
+            <div className="md:hidden py-6 border-t border-[rgba(242,238,230,0.08)] bg-[#111111]/95 backdrop-blur-2xl animate-fade-in-up">
+              <nav className="flex flex-col space-y-4">
                 {navLinks.map((link) => (
                   <button
                     key={link.href}
                     onClick={() => handleLinkClick(link.href)}
-                    className={`nav-link text-left text-base ${activeSection === link.href.slice(1) ? 'active' : ''}`}
+                    className="text-left font-sans text-sm uppercase tracking-wider text-[#96918E] hover:text-[#F2EEE6] transition-colors py-1"
                   >
                     {link.label}
                   </button>
                 ))}
-              </div>
+                <div className="pt-4 border-t border-[rgba(242,238,230,0.08)] flex justify-start">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setIsOpen(false);
+                      setIsResumeOpen(true);
+                    }}
+                    className="w-full justify-between text-xs font-sans tracking-wide border-[rgba(242,238,230,0.2)] text-[#F2EEE6] rounded-full"
+                  >
+                    <span>{t.nav.viewResume}</span>
+                    <ArrowUpRight size={14} />
+                  </Button>
+                </div>
+              </nav>
             </div>
           )}
         </div>
-      </nav>
+      </header>
 
-      {/* Interactive Resume View Dialog */}
+      {/* Interactive Resume Modal */}
       <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </>
   );
