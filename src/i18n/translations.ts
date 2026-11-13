@@ -37,6 +37,7 @@ export interface TranslationContent {
     roleLabel: string;
     headlinePart1: string;
     headlinePart2: string;
+    introSlogan: string;
     headlineLine1: string;
     headlineLine2: string;
     headlineLine3: string;
@@ -174,6 +175,7 @@ export const translations: Record<"fr" | "en", TranslationContent> = {
       roleLabel: "AI ENGINEER · FULL-STACK DEVELOPER",
       headlinePart1: "Concevoir l'intelligence.",
       headlinePart2: "Créer l'impact.",
+      introSlogan: "L'IA qui voit le jeu.",
       headlineLine1: "Concevoir",
       headlineLine2: "l'intelligence.",
       headlineLine3: "Créer l'impact.",
@@ -772,6 +774,7 @@ export const translations: Record<"fr" | "en", TranslationContent> = {
       roleLabel: "AI ENGINEER · FULL-STACK DEVELOPER",
       headlinePart1: "Engineering intelligence.",
       headlinePart2: "Creating impact.",
+      introSlogan: "AI that sees the game.",
       headlineLine1: "Engineering",
       headlineLine2: "intelligence.",
       headlineLine3: "Creating impact.",
