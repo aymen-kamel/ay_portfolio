@@ -53,7 +53,7 @@ export const SectionProgressNav = () => {
   return (
     <nav
       aria-label="Progress navigation"
-      className="hidden lg:flex fixed right-6 xl:right-10 top-1/2 -translate-y-1/2 z-40 flex-col items-end gap-5 pointer-events-auto select-none"
+      className="site-chrome hidden lg:flex fixed right-6 xl:right-10 top-1/2 -translate-y-1/2 z-40 flex-col items-end gap-5 pointer-events-auto select-none"
     >
       <div className="flex flex-col items-end gap-3.5 bg-[#111111]/40 backdrop-blur-sm p-2 rounded-full border border-[rgba(242,238,230,0.04)]">
         {SECTIONS.map((section) => {

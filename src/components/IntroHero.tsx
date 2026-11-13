@@ -24,14 +24,12 @@ const IntroHero = () => {
   const stageRef = useRef<HTMLDivElement>(null);
   const revealRef = useRef<HTMLImageElement>(null);
   const sloganRef = useRef<HTMLDivElement>(null);
-  const dimRef = useRef<HTMLDivElement>(null);
 
   /* ---------- scroll: slogan in / out ---------- */
   useEffect(() => {
     const wrap = wrapRef.current;
     const slogan = sloganRef.current;
-    const dim = dimRef.current;
-    if (!wrap || !slogan || !dim) return;
+    if (!wrap || !slogan) return;
 
     let ticking = false;
 
@@ -41,13 +39,14 @@ const IntroHero = () => {
       const distance = wrap.offsetHeight - window.innerHeight;
       const p = distance > 0 ? clamp(-rect.top / distance) : 0;
 
-      const appear = smooth(0.18, 0.45, p);
+      const appear = smooth(0.12, 0.3, p);
       const leave = smooth(0.88, 1, p);
-      const o = appear * (1 - leave);
 
-      slogan.style.opacity = String(o);
-      slogan.style.transform = `translate3d(0, ${(1 - appear) * 28 - leave * 20}px, 0)`;
-      dim.style.opacity = String(appear * 0.55 * (1 - leave));
+      slogan.style.opacity = String(appear * (1 - leave));
+      slogan.style.transform = `translate3d(0, ${(1 - appear) * 16 - leave * 12}px, 0)`;
+
+      // header + section dots stay hidden on the first screen only
+      document.documentElement.dataset.intro = p < 0.06 ? "top" : "scrolled";
     };
 
     const onScroll = () => {
@@ -63,6 +62,7 @@ const IntroHero = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      delete document.documentElement.dataset.intro;
     };
   }, []);
 
@@ -216,19 +216,14 @@ const IntroHero = () => {
           }}
         />
 
-        {/* 5. extra dimming while the slogan is visible */}
-        <div ref={dimRef} className="absolute inset-0 pointer-events-none bg-[#111111]" style={{ opacity: 0 }} />
-
-        {/* 6. slogan (appears while the hero is pinned) */}
+        {/* 5. small slogan, bottom-left (appears once the user starts scrolling) */}
         <div
           ref={sloganRef}
-          className="absolute inset-0 flex items-center justify-center px-6 text-center pointer-events-none"
+          className="absolute left-6 sm:left-10 lg:left-12 bottom-8 sm:bottom-10 flex items-center gap-4 pointer-events-none"
           style={{ opacity: 0, willChange: "opacity, transform" }}
         >
-          <p
-            className="font-editorial text-[#F2EEE6] leading-[1.02]"
-            style={{ fontSize: "clamp(40px, 7.4vw, 104px)", fontWeight: 500 }}
-          >
+          <span className="block h-px w-8 sm:w-12 bg-[#F2EEE6]/60" />
+          <p className="font-editorial italic text-[#F2EEE6] text-base sm:text-xl leading-snug">
             {t.hero.introSlogan}
           </p>
         </div>
