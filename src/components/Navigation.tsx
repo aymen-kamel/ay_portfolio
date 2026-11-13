@@ -45,7 +45,7 @@ const Navigation = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#111111]/85 backdrop-blur-xl border-b border-[rgba(242,238,230,0.08)] transition-all duration-300">
+      <header className="site-chrome fixed top-0 left-0 right-0 z-50 bg-[#111111]/85 backdrop-blur-xl border-b border-[rgba(242,238,230,0.08)] transition-all duration-300">
         <div className="container-custom">
           <div className="flex items-center justify-between h-20">
             {/* Monogram Brand */}
