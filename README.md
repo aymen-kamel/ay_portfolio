@@ -1,73 +1,75 @@
-# Welcome to your Lovable project
+# Aymen Kamel — Portfolio
 
-## Project info
+Personal portfolio of **Aymen Kamel**, AI engineer and full-stack developer based in Sfax, Tunisia. It showcases applied computer-vision projects (SmartPlayAI / HeroScore, MÉMORA), technical expertise, education and contact details, in French and English.
 
-**URL**: https://lovable.dev/projects/e0857a34-67f7-4c43-8f23-8c536371c593
+## Features
 
-## How can I edit this code?
+- Bilingual interface (FR / EN) with a persistent language switch
+- Editorial dark design with scroll-driven reveals and section progress navigation
+- Case-study pages for flagship projects
+- Responsive layout, from mobile to large desktop
+- Downloadable resume modal and direct contact links
 
-There are several ways of editing your application.
+## Tech stack
 
-**Use Lovable**
+| Area | Tools |
+| --- | --- |
+| Framework | React 18, TypeScript, Vite (SWC) |
+| Styling | Tailwind CSS, shadcn/ui, Radix UI |
+| Routing & data | React Router, TanStack Query |
+| Hosting | Netlify (static build) |
+| Optional backend | Firebase (Firestore rules, Cloud Functions) |
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e0857a34-67f7-4c43-8f23-8c536371c593) and start prompting.
+## Getting started
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requirements: **Node.js 20+** and npm.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+git clone https://github.com/aymen-kamel/ay_portfolio.git
+cd ay_portfolio
+npm ci
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The dev server runs on <http://localhost:8080>.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Scripts
 
-**Use GitHub Codespaces**
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Create the production build in `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Environment variables
 
-## What technologies are used for this project?
+Copy `.env.example` to `.env` and fill in your own values. The file is git-ignored; never commit real credentials.
 
-This project is built with:
+## Project structure
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+src/
+  components/   Page sections (Hero, Projects, Skills, Experience, About, Contact…)
+  components/ui shadcn/ui primitives
+  context/      Language provider
+  hooks/        Reusable hooks
+  i18n/         FR / EN translations
+  pages/        Route components
+public/         Static assets
+functions/      Firebase Cloud Functions (optional)
+```
 
-## How can I deploy this project?
+## Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/e0857a34-67f7-4c43-8f23-8c536371c593) and click on Share -> Publish.
+The site is a static Vite build: run `npm run build` and publish the `dist/` folder. On Netlify, use `npm run build` as the build command and `dist` as the publish directory, and add a redirect of all paths to `/index.html` for client-side routing.
 
-## Can I connect a custom domain to my Lovable project?
+## Contributing
 
-Yes, you can!
+This is a personal project, but issues and suggestions are welcome. Commits follow the [Conventional Commits](https://www.conventionalcommits.org/) style (`feat:`, `fix:`, `chore:`, `docs:`).
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Contact
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Email: <kamelaymen793@gmail.com>
+- LinkedIn: <https://www.linkedin.com/in/aymen-kamel-b135a3301/>
+- GitHub: <https://github.com/aymen-kamel>
