@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import IntroHero from "@/components/IntroHero";
 import Hero from "@/components/Hero";
 import SectionProgressNav from "@/components/SectionProgressNav";
 import Projects from "@/components/Projects";
@@ -25,6 +26,9 @@ const Index = () => {
       <SectionProgressNav />
 
       <main>
+        {/* 00: Pinned intro hero (portrait + spotlight effect + slogan) */}
+        <IntroHero />
+
         {/* 01: Hero Section with Natural Portrait Blend & Burgundy Atmosphere */}
         <Hero />
 

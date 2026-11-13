@@ -11,12 +11,15 @@ const Hero = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    // Progress is measured from the hero's own position (it is no longer at
+    // the very top of the page now that the pinned intro sits above it).
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      if (scrollY <= 900) {
-        setScrollProgress(scrollY / 900);
-      }
+      const el = document.getElementById("hero");
+      if (!el) return;
+      const scrolled = -el.getBoundingClientRect().top;
+      setScrollProgress(Math.min(1, Math.max(0, scrolled / 900)));
     };
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
